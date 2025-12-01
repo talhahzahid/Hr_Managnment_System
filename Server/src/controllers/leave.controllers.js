@@ -61,10 +61,6 @@ export const applyLeave = async (req, res) => {
       reason,
     });
 
-    // Update user's leave balance
-    // user[balanceField] -= daysRequested;
-    // await user.save();
-
     return res.status(201).json({
       message: "Leave applied successfully",
       leave: newLeave,
@@ -78,6 +74,6 @@ export const applyLeave = async (req, res) => {
   }
 };
 
-export const approveLeave = async (req, res) => {
-    
-};
+// approve leave by manager
+
+export const approveLeave = async (req, res) => {};

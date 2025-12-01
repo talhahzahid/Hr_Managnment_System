@@ -42,7 +42,7 @@ export const register = async (req, res) => {
       status: true,
       user: [
         {
-          id: user._id,
+          id: user.id,
           name: user.name,
           email: user.email,
           department: user.department,
@@ -81,10 +81,25 @@ export const login = async (req, res) => {
       res.status(400).json({ messge: "Incorrect password" });
     }
 
+    // specific routes for specific roles
+    const ROUTES = {
+      admin: [
+        { path: "/dashboard", name: "Dashboard", permission: true },
+        { path: "/employee", name: "Employee", permission: true },
+        { path: "/leave", name: "Leave", permission: true },
+      ],
+      hr: [
+        { path: "/dashboard", name: "Dashboard", permission: true },
+        { path: "/employee", name: "Employee", permission: true },
+      ],
+    };
+
+    const allowedRoutes = ROUTES[user.role] || [];
+
     // generate token from user
     const token = generateAccessToken(user);
     res.status(200).json({
-      messge: "Login Successfully",
+      message: "Login Successfully",
       status: true,
       data: [
         {
@@ -96,6 +111,7 @@ export const login = async (req, res) => {
             department: user.department,
             role: user.role,
           },
+          routes: allowedRoutes,
         },
       ],
     });
